@@ -195,12 +195,7 @@ class Tools{
 		Function.prototype.myCall = function(){
 			// 第一个为要改变的this 其它做为参数传给方法 null undefined 或不传 this都为window
 			let _this = arguments[0] || window,
-				ary = [];
-			if(arguments.length > 1){
-				for(var i = 1;i<arguments.length;i++){
-					ary.push(arguments[i]);
-				}
-			}
+				ary = arguments.length > 1 ? Array.prototype.slice.call(arguments,1) : [];
 			_this.__proto__.Fn = this;
 			return function(){
 				_this.Fn(...ary)
@@ -213,7 +208,7 @@ class Tools{
 		Function.prototype.myApply = function(){
 			// 第一个为要改变的this 第二个为数组 null undefined 或不传 this都为window
 			let _this = arguments[0] || window,
-			    ary   = arguments[1] instanceof Array ? arguments[1] : [];//确保参数是传入的数组
+			    ary   = arguments.length > 1 ? (arguments[1] instanceof Array ? arguments[1] : []) : [];//确保参数是传入的数组
 			_this.__proto__.Fn = this;
 			return function(){
 				_this.Fn(...ary)
@@ -226,7 +221,7 @@ class Tools{
 		Function.prototype.myBind = function(){
 			//将原来的函数克隆一份，并将arguments[0]当作this传入
 			let _this = arguments[0] || window,
-				ary = Array.prototype.slice.call(arguments,1);
+				ary = arguments.length > 1 ? Array.prototype.slice.call(arguments,1) : [];
 			_this.__proto__.Fn = this;
 			return function(){
 				_this.Fn(...ary)
